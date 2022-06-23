@@ -38,16 +38,18 @@ async def on_message(message):
             images.append(attachment)
     if len(images) == 0:
         return
+    image_files = []
     for img in images:
         image_file = await img.to_file()
-        msg = await image_channel.send(file=image_file)
-        description = '[メディアを表示](' + msg.jump_url + ')'
-        if message.content:
-            description = message.content + '\n\n' + description
-        embed = discord.Embed(title="📷", description=description)
-        embed.set_author(name=message.author.display_name, icon_url=message.author.avatar_url)
-        await message.delete()
-        await current_ch.send(embed=embed)
+        image_files.append(image_file)
+    msg = await image_channel.send(files=image_files)
+    description = '[メディアを表示](' + msg.jump_url + ')'
+    if message.content:
+        description = message.content + '\n\n' + description
+    embed = discord.Embed(title="📷", description=description)
+    embed.set_author(name=message.author.display_name, icon_url=message.author.avatar_url)
+    await message.delete()
+    await current_ch.send(embed=embed)
 
 
 token = getenv('DISCORD_BOT_TOKEN')
