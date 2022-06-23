@@ -27,6 +27,8 @@ async def on_message(message):
     image_channel = get_image_channel(channels)
     if image_channel is None:
         return
+    if image_channel.id == message.channel.id:
+        return
     if not message.attachments:
         return
     images = []
